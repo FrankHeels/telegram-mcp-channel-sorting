@@ -78,6 +78,27 @@ Anonymous posting as an admin is an admin right and is not changed by it.
 
 - **Contacts:** list, search, add, delete, block, unblock, import, export, look up a phone number without adding a contact, inspect direct chats, find recent contact interactions, and remember contacts by the names you actually use (see below).
 
+### Sort subscribed channels
+
+Call `list_chats` with `sort_by` to list subscribed broadcast channels, including
+archived channels unless `archived=false`. For example:
+
+```json
+{"sort_by": "joined_at", "limit": 30}
+```
+
+- `joined_at` sorts by when you joined the channel, newest first by default.
+- `subscriber_count` lists the largest channels first by default. Channels whose
+  count is missing from the dialog list require an additional Telegram request.
+- `title` sorts channel titles A–Z by default, ignoring case.
+
+Use `sort_order` (`asc` or `desc`) to override the default. The result includes
+`joined_at` and `subscriber_count` where available. Missing values are `null` and
+appear last when sorting by that field. `limit` caps the result after filtering
+and sorting, so `limit=10` with `sort_by="subscriber_count"` returns the top ten
+across the matching channels. Without `sort_by`, `list_chats` keeps its usual
+dialog order and limit behavior.
+
 ### Typing indicators
 
 `send_typing(chat_id, seconds=5, topic_id=None, account=None)` sends a temporary typing
